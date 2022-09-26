@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User_Login</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="container">
+  <h1 class="text-center text-primary" th:text="'Anasayfa'"></h1>
+
+      <br>
+      <br>
+      <br>
+      <br>
+
+<div th:if="${isCustomerAdmin}">
+    <a th:href="@{'/api/customerPage?customerId=' + ${customerId}}"  th:text="'Admin Panel'"></a><br><br>
+</div>
+  <div th:unless="${isCustomerAdmin}">
+      <a th:href="@{'/api/customerPage?customerId=' + ${customerId}}"  th:text="'Banka Hesapları'"></a><br><br>
+  </div>
+
+</body>
+</html>

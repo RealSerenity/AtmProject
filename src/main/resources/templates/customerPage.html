@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>User_Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="javascript" src="webjars/jquery/2.3.3/jquery.min.js"></script>
+    <script type="javascript" src="webjars/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+<!--    <script type="text/javascript" th:src="@{/js/main.js}" ></script>-->
+    <link  rel="stylesheet"  href="webjars/bootstrap/4.0.0-alpha.2/css/bootstrap.min.js">
+    <link rel="stylesheet" th:href="@{/css/style.css}" src="../static/js/main.js">
+
+    <script  th:inline="javascript">
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+
+</head>
+
+<body>
+
+
+
+  <div th:if="${isCustomerAdmin}" class="container">
+      <h1 class="text-center text-primary">Admin Panel</h1>
+
+      <div class="card">
+          <div class="card-block">
+              <table class="table table-hover">
+                  <thead>
+                  <tr>
+                      <th th:text="'Kullanıcı Id'"></th>
+                      <th th:text="'Kullanıcı Adı'"></th>
+                      <th th:text="'Banka Adı'"></th>
+                      <th th:text="'Para'"></th>
+                      <th th:text="'Son giriş tarihi'"></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:if="${allAccounts.size() > 0}" th:each="temp:${allAccounts}">
+                      <td th:text="${temp.getCustomerId()}"></td>
+                      <td th:text="${customerController.getCustomerById(temp.getCustomerId()).getBody().getUsername()}"></td>
+                      <td  th:text="${bankController.getBankNameById(temp.getBankId())}"></td>
+                      <td  th:text="${temp.getMoney()}"></td>
+                      <td  th:text="${customerController.getCustomerById(temp.getCustomerId()).getBody().getLastLogin()}"></td>
+                      <!--                         <button th:onclick="salute([[${customerId}]])">using double brackets</button>-->
+                  <tr/>
+                  <tr th:unless="${bankAccounts.size() > 0}" th:each="temp:${bankAccounts}">
+                      <td  th:text="Hiç hesap yok"></td>
+                  <tr/>
+
+                  </tbody>
+              </table>
+              <hr/>
+              <ul class="nav nav-pills">
+                  <li class="nav-item" th:each="i : ${#numbers.sequence(1,pageCount)}">
+                      <a th:href="@{'/api/customerPage?customerId='+${customerId}+'&page='+${i}}" th:text="${i}" class="nav-link"
+                         th:classappend="${pageIndex == i} ? 'active' : ''"></a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+
+  <div th:unless="${isCustomerAdmin}" class="container">
+      <h1 class="text-center text-primary">Kullanıcı Sayfası</h1>
+      <a class="btn btn-primary eBtn" th:onclick="openForm()" id="button" th:text="'Hesap oluştur'"></a>
+
+      <div class="card">
+          <div class="card-block">
+              <table class="table table-hover">
+                  <thead>
+                  <tr>
+                      <th>Banka Adı</th>
+                      <th>Para</th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                     <tr th:if="${bankAccounts.size() > 0}" th:each="temp:${bankAccounts}">
+                         <td  th:text="${bankController.getBankNameById(temp.getBankId())}"></td>
+                         <td  th:text="${temp.getMoney()}"></td>
+                         <td><a  class="btn btn-primary" th:href="@{'/api/accountPage?customerId='+ ${customerId}+'&accountId='+ ${temp.getId()}}">Hesaba Git</a></td>
+<!--                         <button th:onclick="salute([[${customerId}]])">using double brackets</button>-->
+                    <tr/>
+                     <tr th:unless="${bankAccounts.size() > 0}" th:each="temp:${bankAccounts}">
+                         <td  th:text="Hiç hesap yok"></td>
+                     <tr/>
+
+                  </tbody>
+              </table>
+              <hr/>
+              <ul class="nav nav-pills">
+                  <li class="nav-item" th:each="i : ${#numbers.sequence(1,pageCount)}">
+                      <a th:href="@{'/api/customerPage?customerId='+${customerId}+'&page='+${i}}" th:text="${i}" class="nav-link"
+                      th:classappend="${pageIndex == i} ? 'active' : ''"></a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+
+      <div id="myForm" style="display: none" class="form-container">
+          <form th:action="@{'/api/createAccount?customerId='+${customerId}}" th:method="post" th:object="${createAccount}">
+              <h2 th:text="'Hesap Oluştur'"></h2>
+              <div class="form-group">
+                  <label for="bankId" class="col-form-label" th:text="'Banka seç'"></label><br>
+                        <select th:field="*{bankId}" id="bankId" class="cSelect">
+                            <option th:each="bank : ${banks}" th:value="${bank.id}" th:text="${bank.bankName}"
+                                    th:selected="${bank.id==banks.get(0)}"></option>
+                        </select>
+                    </div>
+                  <!--                      <p class="text-danger" th:if="${nullBankId != null}" th:text="${nullBankId}"></p>-->
+              <br>
+              <button type="submit" class="btn btn-primary">Oluştur</button><br>
+              <button type="button" class="btn btn-primary" id="cancelbtn" onclick="closeForm()">Kapat</button>
+          </form>
+      </div>
+  </div>
+
+
+  <div class="hideMe" th:if="${infoMessage != null}" th:switch="${infoMessage.messageType}">
+      <div class="info-div  success-msg" th:case="${T(com.rserenity.atmproject.Exception.ProcessInfo.MessageType).Success}">
+          <i class="fa fa-check" th:text="${infoMessage.message}"></i>
+      </div>
+      <div class="info-div warning-msg" th:case="${T(com.rserenity.atmproject.Exception.ProcessInfo.MessageType).Failed}">
+          <i class="fa fa-warning" th:text="${infoMessage.message}"></i>
+      </div>
+      <div class="info-div error-msg" th:case="${T(com.rserenity.atmproject.Exception.ProcessInfo.MessageType).Error}">
+          <i class="fa fa-times-circle" th:text="${infoMessage.message}"></i>
+      </div>
+  </div>
+
+</body>
+</html>
+

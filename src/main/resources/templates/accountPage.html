@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User_Login</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}" src="../static/js/main.js">
+</head>
+
+<body>
+    <div class="container">
+  <h1 th:text="${bankname}" class="text-center text-primary"></h1>
+  <h1 th:text="'Mevcut bakiye : ' + ${currentMoney}" class="text-center text-primary"></h1>
+<br>
+  <br>
+  <form th:method="post" th:action="@{'/api/paraYatır?customerId='+${customerId}+'&accountId='+${accountId}}" th:object="${accountDtoYatir}">
+      <p th:text="'Para Yatır'"></p>
+      <div class="form-group  mb-4">
+          <label th:text="'Para miktari'" for="paraMiktarıYatır" class="text-capitalize text-muted"></label>
+          <input th:field="*{money}" type="number" class="form-control" id="paraMiktarıYatır" name="paraMiktarıYatır" >
+          <p class="text-danger" th:if="${#fields.hasErrors('money')}" th:errors="*{money}"></p>
+      </div>
+      <button th:text="'Yatir'" type="submit" class="btn btn-primary"></button>
+  </form>
+  <br>
+  <br>
+  <form th:method="post" th:action="@{'/api/paraCek?customerId='+${customerId}+'&accountId='+${accountId}}" th:object="${accountDtoCek}">
+      <p th:text="'Para Cek'"></p>
+      <div class="form-group  mb-4">
+          <label th:text="'Para miktari'" for="paraMiktarıCek" class="text-capitalize text-muted"></label>
+          <input th:field="*{money}" type="text" class="form-control" id="paraMiktarıCek" name="paraMiktarıCek" >
+          <p class="text-danger" th:if="${#fields.hasErrors('money')}" th:errors="*{money}"></p>
+      </div>
+      <button th:text="'Cek'" type="submit" class="btn btn-primary"></button>
+  </form>
+  <br>
+  <br>
+  <form th:method="post" th:action="@{'/api/paraAktar?customerId='+${customerId}+'&accountId='+${accountId}}" th:object="${accountDtoAktar}">
+      <p th:text="'Para Aktar'"></p>
+      <div class="form-group  mb-4">
+          <label th:text="'Aktarılacak Hesap Idsi'" for="hesapId" class="text-capitalize text-muted"></label>
+          <input  th:field="*{id}" type="text" class="form-control" id="hesapId" name="hesapId" >
+          <p class="text-danger" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+          <br>
+          <label th:text="'Para miktari'" for="paraMiktarıAktar" class="text-capitalize text-muted"></label>
+          <input  th:field="*{money}" type="text" class="form-control" id="paraMiktarıAktar" name="paraMiktarıAAktar" >
+          <p class="text-danger" th:if="${#fields.hasErrors('money')}" th:errors="*{money}"></p>
+      </div>
+      <button th:text="'Aktar'" type="submit" class="btn btn-primary"></button>
+  </form>
+    </div>
+
+        <div class="hideMe" th:if="${infoMessage != null}" th:switch="${infoMessage.messageType}">
+            <div class="info-div  success-msg" th:case="${T(com.rserenity.atmproject.Exception.ProcessInfo.MessageType).Success}">
+                <i class="fa fa-check" th:text="${infoMessage.message}"></i>
+            </div>
+            <div class="info-div warning-msg" th:case="${T(com.rserenity.atmproject.Exception.ProcessInfo.MessageType).Failed}">
+                <i class="fa fa-warning" th:text="${infoMessage.message}"></i>
+            </div>
+            <div class="info-div error-msg" th:case="${T(com.rserenity.atmproject.Exception.ProcessInfo.MessageType).Error}">
+                <i class="fa fa-times-circle" th:text="${infoMessage.message}"></i>
+            </div>
+        </div>
+<!--  <div class="info-div" id="hideMe" th:if="${infoMessage != null}">-->
+</body>
+</html>

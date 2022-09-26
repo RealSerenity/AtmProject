@@ -1,0 +1,136 @@
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
+
+td {
+   text-decoration-color: black;
+}
+
+.body{
+   margin: 0;
+   padding: 0;
+   height: 100%;
+}
+
+.container{
+   min-height: 100%;
+}
+
+.form-container {
+   border-radius: 8px;
+   min-width: 250px;
+   max-width: 600px;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   background-color: lightskyblue;
+   position: absolute;
+   text-align: center;
+   align-items: center;
+}
+.form-container .customform-item{
+   width: 80%;
+   margin-left: 10%;
+}
+
+.form-container #cancelbtn{
+   background-color: red;
+}
+
+.form-container .btn {
+   padding-left: 10%;
+   color: white;
+   border: none;
+   cursor: pointer;
+   width: 80%;
+   margin-bottom:10px;
+   opacity: 0.8;
+}
+
+.form-container .btn:hover, .open-button:hover {
+   opacity: 1;
+}
+
+select {
+
+   /* styling */
+   background-color: white;
+   border: thin solid blue;
+   border-radius: 4px;
+   display: inline-block;
+   font: inherit;
+   line-height: 1.5em;
+   padding: 0.5em 3.5em 0.5em 1em;
+
+   /* reset */
+
+   margin: 0;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+}
+
+.cSelect{
+   background-image:
+           linear-gradient(45deg, transparent 50%, blue 50%),
+           linear-gradient(135deg, blue 50%, transparent 50%),
+           linear-gradient(to right, skyblue, skyblue);
+   background-position:
+           calc(100% - 20px) calc(1em + 2px),
+           calc(100% - 15px) calc(1em + 2px),
+           100% 0;
+   background-size:
+           5px 5px,
+           5px 5px,
+           2.5em 2.5em;
+   background-repeat: no-repeat;
+}
+      /*page message*/
+.info-div{
+   width: 20%;
+   padding-bottom: 20px;
+   float: left;
+}
+.success-msg {
+   border-left: 6px solid #04AA6D;
+   color: #270;
+   background-color: #DFF2BF;
+}
+.warning-msg {
+   border-left: #eaeaea;
+   color: #9F6000;
+   background-color: #FEEFB3;
+}
+.error-msg {
+   border-left: #ff3945;
+   color: #D8000C;
+   background-color: #FFBABA;
+}
+.info-msg,
+.success-msg,
+.warning-msg,
+.error-msg {
+   margin: 10px 0;
+   padding: 10px;
+   border-radius: 3px 3px 3px 3px;
+}
+      /*page messages end */
+
+/*
+      css hide anim
+*/
+
+.hideMe {
+   -webkit-animation: cssAnimation 4s forwards;
+   animation: cssAnimation 4s forwards;
+}
+@keyframes cssAnimation {
+   0%   {opacity: 1;}
+   80%  {opacity: 1;}
+   100% {opacity: 0;}
+}
+@-webkit-keyframes cssAnimation {
+   0%   {opacity: 1;}
+   80%  {opacity: 1;}
+   100% {opacity: 0;}
+}

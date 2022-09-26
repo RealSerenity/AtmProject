@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User_Login</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="container">
+  <h1 class="text-center text-primary">Kullanıcı Kayıt</h1>
+
+
+  <form th:method="post" th:action="@{/api/userRegister}" th:object="${customerDto}">
+
+      <div class="form-group  mb-4">
+          <label th:text="#{username}" for="userName" class="text-capitalize text-muted"></label>
+          <input th:field="*{username}" type="text" class="form-control" id="userName" name="userName" >
+          <p class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+          <p class="text-danger" th:if="${userexists != null}" th:text="${userexists}"></p>
+      </div>
+      <div class="form-group mb-4">
+          <label th:text="#{password}" for="password" class="text-capitalize text-muted"></label>
+          <input th:field="*{password}" type="password" class="form-control" id="password" name="password"  >
+          <p  class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+      </div>
+      <a href="/api/userLogin" th:text="'Giriş yap'"></a><br><br>
+      <button th:text="#{clear}" type="reset" class="btn btn-danger"></button>
+      <button th:text="#{submit}" type="submit" class="btn btn-primary"></button>
+  </form>
+
+</body>
+</html>
